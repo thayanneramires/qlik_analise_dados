@@ -1,0 +1,1 @@
+# qlik_analise_dados
