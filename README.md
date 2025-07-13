@@ -1,4 +1,10 @@
+
+<img width="1918" height="200" alt="image" src="https://github.com/user-attachments/assets/e6e12a4f-9e93-4abd-9eda-00f649fca818" />
+
 # Análise Comercial com Qlik Sense
+Este projeto tem como objetivo realizar uma análise de dados completa utilizando o Qlik Sense, abrangendo desde o processo de ETL, modelagem dos dados até a criação do painel interativo.
+
+O aplicativo oferece uma visão geral das vendas, apresentando métricas essenciais como faturamento, número de vendas, ticket médio, positivação de clientes e análise do mix de produtos. Além disso, conta com abas específicas para uma análise detalhada de clientes e outra dedicada aos produtos.
 
 <img width="1918" height="847" alt="image" src="https://github.com/user-attachments/assets/e7ac40fb-3a1f-4024-9155-2ba8098b4a57" />
 
