@@ -7,7 +7,7 @@ Este projeto tem como objetivo realizar uma análise de dados completa para áre
 O aplicativo oferece uma visão geral das vendas, apresentando métricas essenciais como faturamento, número de vendas, ticket médio, positivação de clientes e análise do mix de produtos. Além disso, conta com abas específicas para uma análise detalhada de clientes e outra dedicada aos produtos.
 
 ## Transformação e Modelagem 
-<img width="1071" height="581" alt="image" src="https://github.com/user-attachments/assets/6d6930b2-dcc4-4a8c-aab9-8b010616d89a" />
+<img width="1071" height="481" alt="image" src="https://github.com/user-attachments/assets/6d6930b2-dcc4-4a8c-aab9-8b010616d89a" />
 
 ````
 LIB CONNECT TO 'northwind';
@@ -33,6 +33,40 @@ SELECT "order_date",
 	"customer_id"
 FROM "public"."fato_vendas";
 ````
+````
+TEMP_DATA:
+LOAD DISTINCT
+    DATA_VENDA
+RESIDENT FATO_VENDAS;
+
+DAT_MIN_MAX:
+LOAD
+    MIN(DATA_VENDA) as MIN_DATA,
+    MAX(DATA_VENDA) as MAX_DATA
+RESIDENT TEMP_DATA;
+DROP TABLE TEMP_DATA;
+
+LET vMinDate = NUM(PEEK('MIN_DATA', 0, 'DAT_MIN_MAX'));
+LET vMaxDate = NUM(PEEK('MAX_DATA', 0, 'DAT_MIN_MAX'));
+
+DROP TABLE DAT_MIN_MAX;
+
+TEMP_CALENDARIO:
+LOAD
+    $(vMinDate) + ITERNO() - 1 AS NUM_DATA
+AUTOGENERATE 1
+WHILE $(vMinDate) + IterNo() - 1 <= $(vMaxDate);
+
+DIM_CALENDARIO:
+LOAD
+    DATE(NUM_DATA)             AS DATA_VENDA,
+    MONTH(NUM_DATA)            AS MES,
+    YEAR(NUM_DATA)             AS ANO,
+    MONTHNAME(NUM_DATA)        AS MES_ANO
+RESIDENT TEMP_CALENDARIO;
+DROP TABLE TEMP_CALENDARIO;
+````
+
 
 
 
