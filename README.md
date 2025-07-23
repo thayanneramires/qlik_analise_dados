@@ -9,6 +9,10 @@ O aplicativo oferece uma visão geral das vendas, apresentando métricas essenci
 ## Transformação e Modelagem 
 <img width="1071" height="481" alt="image" src="https://github.com/user-attachments/assets/6d6930b2-dcc4-4a8c-aab9-8b010616d89a" />
 
+A conexão com os dados é realizada por meio do banco Northwind no PostgreSQL. Utilizando o modelo dimensional Star Schema, as transformações e a criação das tabelas fato e dimensão foram feitas no Editor de Carga do Qlik.
+
+### FATO_VENDAS
+
 ````
 LIB CONNECT TO 'northwind';
 
@@ -33,6 +37,7 @@ SELECT "order_date",
 	"customer_id"
 FROM "public"."fato_vendas";
 ````
+### DIM_CALENDARIO
 ````
 TEMP_DATA:
 LOAD DISTINCT
@@ -66,18 +71,50 @@ LOAD
 RESIDENT TEMP_CALENDARIO;
 DROP TABLE TEMP_CALENDARIO;
 ````
+### DIM_PRODUTO
+````
+LIB CONNECT TO 'northwind';
 
+DIM_PRODUTO:
+LOAD product_id, 
+	product_name, 
+	MONEY(unit_price) AS preco, 
+	categoria, 
+	desc_categoria, 
+	fornecedor;
 
+SELECT "product_id",
+	"product_name",
+	"unit_price",
+	"categoria",
+	"desc_categoria",
+	"fornecedor"
+FROM "public"."dim_produto";
+````
+### DIM_CLIENTE
+````
+LIB CONNECT TO 'northwind';
 
+DIM_CLIENTE:
+LOAD customer_id, 
+	company_name AS CLIENTE, 
+	city, 
+	country;
 
+SELECT "customer_id",
+	"company_name",
+	"city",
+	"country"
+FROM "public"."dim_cliente";
+
+````
+# Painéis Interativos de Dados
+
+### Visão Geral de Vendas
 <img width="1918" height="847" alt="image" src="https://github.com/user-attachments/assets/e7ac40fb-3a1f-4024-9155-2ba8098b4a57" />
 
-# Aba Clientes
-
+### Detalhamento por Cliente
 <img width="1918" height="852" alt="image" src="https://github.com/user-attachments/assets/8207e127-3a7c-4e59-af01-f0456d309a8f" />
 
-
-# Aba produtos
-
+### Detalhamento por Produto
 <img width="1918" height="851" alt="image" src="https://github.com/user-attachments/assets/05344ba2-a410-49ae-99d0-035475048ae6" />
-
